@@ -2,10 +2,12 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Category;
+use App\Models\Contact;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Contact>
+ * @extends Factory<Contact>
  */
 class ContactFactory extends Factory
 {
@@ -18,16 +20,16 @@ class ContactFactory extends Factory
     {
         $categoryIds = Category::pluck('id')->toArray();
 
-    return [
-        'category_id' => fake()->randomElement($categoryIds),
-        'first_name'  => fake()->firstName(),
-        'last_name'   => fake()->lastName(),
-        'gender'      => fake()->numberBetween(1, 3),
-        'email'       => fake()->email(),
-        'tel'         => '090' . rand(10000000, 99999999),
-        'address'     => fake()->address(),
-        'building'    => fake()->company(),
-        'detail'      => fake()->realText(100),
-    ];
+        return [
+            'category_id' => fake()->randomElement($categoryIds),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'gender' => fake()->numberBetween(1, 3),
+            'email' => fake()->email(),
+            'tel' => '090'.rand(10000000, 99999999),
+            'address' => fake()->address(),
+            'building' => fake()->company(),
+            'detail' => fake()->realText(100),
+        ];
     }
 }
