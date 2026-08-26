@@ -1,18 +1,17 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::get('/', [ContactController::class, 'index']);
+Route::post('/contact', [ContactController::class, 'store']);
+Route::post('/contact/confirm', [ContactController::class, 'confirm']);
+Route::get('/thanks', [ContactController::class, 'thanks']);
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin/contacts/{contact}', [AdminController::class, 'show']);
+Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy']);
+
+Route::resource('admin/tags', TagController::class)->except(['index', 'create', 'show']);
