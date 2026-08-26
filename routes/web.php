@@ -1,9 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/contact', [ContactController::class, 'index']);
+Route::get('/', [ContactController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store']);
 Route::post('/contact/confirm', [ContactController::class, 'confirm']);
-Route::get('/contact/thanks', [ContactController::class, 'thanks']);
+Route::get('/thanks', [ContactController::class, 'thanks']);
+
+Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin/contacts/{contact}', [AdminController::class, 'show']);
+Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy']);
+
+Route::resource('admin/tags', TagController::class)->except(['index', 'create', 'show']);

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Tag;
-use App\Models\Category;
 use App\Http\Requests\StoreContactRequest;
+use App\Models\Category;
 use App\Models\Contact;
+use App\Models\Tag;
+
 class ContactController extends Controller
 {
     /**
@@ -14,22 +14,14 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $categories=Category::all();
-        $tags=Tag::all();
-    
-        return view('contact.index',compact('category','tag'));
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('contact.index', compact('categories', 'tags'));
     }
 
     /**
      * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
      */
     public function store(StoreContactRequest $request)
     {
@@ -46,38 +38,6 @@ class ContactController extends Controller
         return redirect()->route('contact.thanks');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function confirm(StoreContactRequest $request)
     {
         $validated = $request->validated();
@@ -85,11 +45,12 @@ class ContactController extends Controller
         $category = Category::find($validated['category_id']);
 
         $tags = collect();
-        if (!empty($validated['tag_ids'])) {
-            $tags = Tag::whereIn('id', $validated['tag_ids'])->get();
-    }
 
-    return view('contact.confirm', compact('validated', 'category', 'tags'));
+        if (! empty($validated['tag_ids'])) {
+            $tags = Tag::whereIn('id', $validated['tag_ids'])->get();
+        }
+
+        return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
 
     public function thanks()
