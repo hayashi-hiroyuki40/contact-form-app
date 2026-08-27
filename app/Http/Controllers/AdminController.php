@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexContactRequest;
 use App\Models\Category;
 use App\Models\Contact;
+use App\Models\Tag;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminController extends Controller
             });
         }
 
-        if ($request->filled('gender')) {
+        if ($request->filled('gender') && $request->gender != 0) {
             $query->where('gender', $request->gender);
         }
 
@@ -35,19 +36,21 @@ class AdminController extends Controller
             $query->whereDate('created_at', $request->date);
         }
 
-        $contacts = $query->with('category')
+        $contacts = $query->with('category','tags')
             ->latest()
             ->paginate(7)
             ->appends($request->validated());
 
         $categories = Category::all();
 
-        return view('admin.index', compact('contacts', 'categories'));
+        $tags = Tag::all();
+
+        return view('admin.index', compact('contacts', 'categories','tags'));
     }
 
     public function show(Contact $contact)
     {
-        $contact->load('category');
+        $contact->with('category');
 
         return view('admin.show', compact('contact'));
     }

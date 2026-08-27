@@ -35,7 +35,7 @@ class ContactController extends Controller
             $contact->tags()->sync($request->input('tag_ids'));
         }
 
-        return redirect()->route('contact.thanks');
+        return redirect('/thanks');
     }
 
     public function confirm(StoreContactRequest $request)
