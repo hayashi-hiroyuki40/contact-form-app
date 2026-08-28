@@ -14,6 +14,7 @@ class TagController extends Controller
 
         return redirect('/admin');
     }
+
     public function edit(Tag $tag)
     {
         return view('admin.tags.edit', compact('tag'));
@@ -35,7 +36,7 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
-    
+
         return redirect('/admin');
     }
 }

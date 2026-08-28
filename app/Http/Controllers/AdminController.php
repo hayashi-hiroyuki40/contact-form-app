@@ -24,7 +24,7 @@ class AdminController extends Controller
             });
         }
 
-        if ($request->filled('gender') && $request->gender != 0) {
+        if ($request->has('gender') && $request->gender != 0) {
             $query->where('gender', $request->gender);
         }
 
@@ -36,7 +36,7 @@ class AdminController extends Controller
             $query->whereDate('created_at', $request->date);
         }
 
-        $contacts = $query->with('category','tags')
+        $contacts = $query->with('category', 'tags')
             ->latest()
             ->paginate(7)
             ->appends($request->validated());
@@ -45,7 +45,7 @@ class AdminController extends Controller
 
         $tags = Tag::all();
 
-        return view('admin.index', compact('contacts', 'categories','tags'));
+        return view('admin.index', compact('contacts', 'categories', 'tags'));
     }
 
     public function show(Contact $contact)
