@@ -1,66 +1,182 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## contact-form-app
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 概要
 
-## About Laravel
+コーチテック確認テストのお問い合わせフォーム
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+誰でもお問い合わせを送ることができるお問い合わせフォーム、管理者の登録用画面、管理者ログイン用画面、送られてきたお問い合わせ内容を見ることができる管理画面を作成しました。検索機能やタグの追加、更新、削除などの機能の作成。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ER図
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```mermaid
+erDiagram
+    categories ||--o{ contacts : "1対多"
+    contacts ||--o{ contact_tag : "1対多"
+    tags ||--o{ contact_tag : "1対多"
 
-## Learning Laravel
+    categories {
+        bigint id PK
+        varchar content
+        timestamp created_at
+        timestamp updated_at
+    }
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    contacts {
+        bigint id PK
+        bigint category_id FK
+        varchar first_name
+        varchar last_name
+        tinyint gender
+        varchar email
+        varchar tel
+        varchar address
+        varchar building
+        varchar detail
+        timestamp created_at
+        timestamp updated_at
+    }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    tags {
+        bigint id PK
+        varchar name
+        timestamp created_at
+        timestamp updated_at
+    }
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    contact_tag {
+        bigint id PK
+        bigint contact_id FK
+        bigint tag_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
 
-## Laravel Sponsors
+    users {
+        bigint id PK
+        varchar name
+        varchar email
+        timestamp email_verified_at
+        varchar password
+        varchar remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 環境構築手順
 
-### Premium Partners
+以下の手順に沿ってローカル開発環境を構築してください。
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Markdown
 
-## Contributing
+## 環境構築手順
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. リポジトリのクローンと移動
 
-## Code of Conduct
+```bash
+git clone https://github.com/hayashi-hiroyuki40/contact-form-app.git
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+cd contact-form-app
+```
 
-## Security Vulnerabilities
+2. Composer パッケージのインストール
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+docker run --rm \
+  -u "$(id -u):$(id -g)" \
+  -v "$(pwd):/var/www/html" \
+  -w /var/www/html \
+  -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+  laravelsail/php82-composer:latest \
+  composer install
+```
 
-## License
+3. 環境設定ファイル (.env) の作成
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cp .env.example .env
+```
+
+4. Sailの設定ファイル生成 (MySQL)
+
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    -e COMPOSER_CACHE_DIR=/tmp/composer_cache \
+    laravelsail/php82-composer:latest \
+    php artisan sail:install --with=mysql
+```
+
+※ Apple Silicon (M1/M2/M3) Mac をお使いの場合
+
+sail up -d 実行時に以下のエラーが発生することがあります。
+
+```
+no matching manifest for linux/arm64/v8
+```
+
+その場合は compose.yaml を開き、mysql サービスに platform: 'linux/amd64' を追加してください。
+
+```yaml
+mysql:
+image: "mysql/mysql-server:8.0"
+platform: "linux/amd64" # ← この行を追加
+ports: 5. Dockerコンテナの起動
+```
+
+編集後、保存してからsail up -dを実行してください。
+
+5. Dockerコンテナの起動
+
+```bash
+./vendor/bin/sail up -d
+```
+
+6. アプリケーションキー生成 & データベース構築
+
+```Bash
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
+```
+
+※データベースを初期化（リセット）したい場合は以下を実行してください。
+
+```Bash
+./vendor/bin/sail artisan migrate:fresh --seed
+```
+
+7. フロントエンドのセットアップ
+
+```Bash
+# パッケージのインストール
+./vendor/bin/sail npm install
+
+# 開発サーバーの起動（実行したままにします）
+./vendor/bin/sail npm run dev
+```
+
+## 使用技術
+
+- OS
+- PHP 8.2
+- Laravel 10.x
+- MySQL 8.0
+- Nginx
+- Vite, Tailwind CSS ^3.4.0
+- Docker, Laravel Sail, phpMyAdmin
+- Git / GitHub
+- PHPUnit
+
+## APIエンドポイント一覧
+
+なし
+
+## 開発環境URL
+
+http://localhost
+
+## 作成者
+
+林　裕之
