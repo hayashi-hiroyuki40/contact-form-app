@@ -2,14 +2,16 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 class ContactTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_モデル_お問い合わせ関係_1つのお問い合わせが特定のカテゴリに属すること()
     {
         $category = Category::factory()->create();
@@ -25,7 +27,7 @@ class ContactTest extends TestCase
     {
         $category = Category::factory()->create();
         $contact = Contact::factory()->create([
-        'category_id' => $category->id,
+            'category_id' => $category->id,
         ]);
         $tags = Tag::factory()->count(2)->create();
 
@@ -47,7 +49,7 @@ class ContactTest extends TestCase
         $contact->tags()->sync($tags->pluck('id'));
 
         $this->assertDatabaseHas('contact_tag', [
-    'contact_id' => $contact->id,
-    'tag_id'     => $tags->first()->id,]);
-}
+            'contact_id' => $contact->id,
+            'tag_id' => $tags->first()->id, ]);
+    }
 }

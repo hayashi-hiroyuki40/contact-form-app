@@ -11,10 +11,9 @@ Route::post('/contacts/confirm', [ContactController::class, 'confirm']);
 Route::get('/thanks', [ContactController::class, 'thanks']);
 
 Route::middleware('auth')->group(function () {
-Route::get('/admin', [AdminController::class, 'index']);
-Route::get('/admin/contacts/{contact}', [AdminController::class, 'show']);
-Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy']);
+    Route::get('/admin', [AdminController::class, 'index']);
+    Route::get('/admin/contacts/{contact}', [AdminController::class, 'show']);
+    Route::delete('/admin/contacts/{contact}', [AdminController::class, 'destroy']);
 
-
-Route::resource('/admin/tags', TagController::class)->except(['index', 'create', 'show']);
+    Route::resource('/admin/tags', TagController::class)->except(['index', 'create', 'show']);
 });

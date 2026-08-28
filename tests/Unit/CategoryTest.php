@@ -2,13 +2,15 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Category;
 use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 class CategoryTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_モデル_カテゴリ関係_1つのカテゴリから紐づく複数のお問い合わせが取得できること()
     {
         $category = Category::factory()->create();

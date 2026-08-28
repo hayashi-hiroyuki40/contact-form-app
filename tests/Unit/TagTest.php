@@ -2,14 +2,17 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
+use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
-use App\Models\Category;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 class TagTest extends TestCase
 {
     use RefreshDatabase;
+
     public function test_モデル_タグ関係_中間テーブルを介して1つのタグが複数のお問い合わせに紐づいていること()
     {
         $category = Category::factory()->create();
@@ -27,7 +30,7 @@ class TagTest extends TestCase
 
     public function test_バリデーション_タグ新規登録_タグ名の必須入力文字数制限一意性が維持されていること()
     {
-        $this->expectException(\Illuminate\Database\QueryException::class);
+        $this->expectException(QueryException::class);
 
         Tag::factory()->create(['name' => '重複タグ']);
         Tag::factory()->create(['name' => '重複タグ']);
@@ -40,7 +43,7 @@ class TagTest extends TestCase
 
         $this->assertTrue($tag1->update(['name' => 'タグ1']));
 
-        $this->expectException(\Illuminate\Database\QueryException::class);
+        $this->expectException(QueryException::class);
         $tag1->update(['name' => 'タグ2']);
     }
 }
