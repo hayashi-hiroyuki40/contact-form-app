@@ -177,6 +177,12 @@ ports: 5. Dockerコンテナの起動
 
 http://localhost
 
+## テスト実行
+
+```bash
+./vendor/bin/sail artisan test
+```
+
 ## 作成者
 
 林　裕之
