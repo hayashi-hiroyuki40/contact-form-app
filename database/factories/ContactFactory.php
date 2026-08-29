@@ -22,14 +22,14 @@ class ContactFactory extends Factory
 
         return [
             'category_id' => fake()->randomElement($categoryIds),
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
+            'first_name' => fake()->lastName(),
+            'last_name' => fake()->firstName(),
             'gender' => fake()->numberBetween(1, 3),
             'email' => fake()->email(),
             'tel' => '090'.rand(10000000, 99999999),
             'address' => fake()->address(),
             'building' => fake()->company(),
-            'detail' => fake()->realText(100),
+            'detail' => fake()->realText(110),
         ];
     }
 }
