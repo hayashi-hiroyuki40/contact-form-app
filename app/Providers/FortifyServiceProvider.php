@@ -13,7 +13,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+ feature/custom-messages
 use Laravel\Fortify\Http\Requests\LoginRequest;
+ main
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -52,18 +54,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::registerView(function () {
             return view('auth.register');
-        });
-        $this->app->bind(LoginRequest::class, function () {
-            return new class extends LoginRequest
-            {
-                public function messages()
-                {
-                    return [
-                        'email.required' => 'メールアドレスを入力してください',
-                        'password.required' => 'パスワードを入力してください',
-                    ];
-                }
-            };
         });
     }
 }
