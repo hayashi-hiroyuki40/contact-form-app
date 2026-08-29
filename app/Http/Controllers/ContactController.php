@@ -25,10 +25,6 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        if ($request->input('action') === 'back') {
-            return redirect()->route('contact.index')->withInput();
-        }
-
         $contact = Contact::create($request->except('tag_ids'));
 
         if ($request->has('tag_ids')) {
@@ -40,6 +36,8 @@ class ContactController extends Controller
 
     public function confirm(StoreContactRequest $request)
     {
+        $request->flash();
+
         $validated = $request->validated();
 
         $category = Category::find($validated['category_id']);

@@ -13,6 +13,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
+ feature/custom-messages
+use Laravel\Fortify\Http\Requests\LoginRequest;
+ main
 
 class FortifyServiceProvider extends ServiceProvider
 {
